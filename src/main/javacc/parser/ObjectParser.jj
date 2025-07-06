@@ -1,0 +1,182 @@
+PARSER_BEGIN(ObjectParser)
+package parser;
+
+import internal.Face;
+import internal.MeshObject;
+import api.FaceData;
+import api.MeshData;import java.io.InputStream;
+
+public class ObjectParser {
+	public static MeshData parse(InputStream inputStream) throws Exception{
+		ObjectParser objectParser = new ObjectParser(inputStream);
+		MeshObject meshObject = new MeshObject();
+		objectParser.OBJFile(meshObject);
+		return meshObject;
+	}
+}
+
+
+
+PARSER_END(ObjectParser)
+
+SKIP :
+{
+ <("m"(~["\n"])*)>
+ | <("s" (~["\n"])*)>
+ | <("o" (~["\n"])*)>
+
+}
+
+TOKEN : { <FLOAT: (["-"])?(["0"-"9"])+("."(["0"-"9"])+) > }
+TOKEN: {<NEWLINE: "\n" | "\r">}
+TOKEN : {<SPACE: " ">}
+TOKEN : {<COMMENT:"#"(~["\n"])*>}
+TOKEN : {<POINT:".">}
+TOKEN : {<NAT:(["0"-"9"])+>}
+TOKEN : {<MINUS:"-">}
+TOKEN : {<VERTEX:"v ">}
+TOKEN : {<FACE:"f ">}
+TOKEN : {<NORMAL:"vn ">}
+TOKEN : {<UV:"vt ">}
+TOKEN : {<SLASH:"/">}
+TOKEN : {<MATERIAL:"mtllib ">}
+TOKEN : {<NAME: "o ">}
+TOKEN : {< ID: ["a"-"z","A"-"Z","_"] ( ["a"-"z","A"-"Z","_","0"-"9"] )* >}
+
+void OBJFile(MeshObject meshObject) :
+{}
+{
+    ( Line(meshObject) )* <EOF>
+}
+
+void Line(MeshObject meshObject) :
+{}
+{
+  VertexLine(meshObject)
+  | NormalLine(meshObject)
+  | UVLine(meshObject)
+  | FaceLine(meshObject)
+  | CommentLine()
+  | EmptyLine()
+  <NEWLINE>
+}
+
+void VertexLine(MeshObject meshObject) :
+{float x, y, z;}
+{
+	<VERTEX>
+	x = Float()
+	<SPACE>
+	y = Float()
+	<SPACE>
+	z = Float()
+	{
+		float[] vertex = new float[3];
+		vertex[0] = x;
+		vertex[1] = y;
+		vertex[2] = z;
+		System.out.println("Vertex : " + x + ":" + y + ":" + z);
+		meshObject.vertices.add(vertex);
+	}
+}
+
+void NormalLine(MeshObject meshObject) :
+{float x, y, z;}
+{
+	<NORMAL>
+	x = Float()
+	<SPACE>
+	y = Float()
+	<SPACE>
+	z = Float()
+	{
+		float[] vertex = new float[3];
+		vertex[0] = x;
+		vertex[1] = y;
+		vertex[2] = z;
+		System.out.println("Normal : " + x + ":" + y + ":" + z);
+		meshObject.normals.add(vertex);
+	}
+}
+void UVLine(MeshObject meshObject) :
+{float x, y;}
+{
+	<UV>
+	x = Float()
+	<SPACE>
+	y = Float()
+	{
+		float[] uvs = new float[2];
+		uvs[0] = x;
+		uvs[1] = y;
+		System.out.println("UV : " + x + ":" + y);
+		meshObject.uvs.add(uvs);
+	}
+}
+
+void FaceLine(MeshObject meshObject) :
+{
+    int[] verticesIndex = new int[3];
+	int[] uvIndex = new int[3];
+	int[] normalIndex = new int[3];
+	String temp;
+ }
+{
+    <FACE>
+    temp = Nat()
+    <SLASH>
+    {verticesIndex[0] = Integer.parseInt(temp);}
+    temp = Nat()
+    <SLASH>
+    {uvIndex[0] = Integer.parseInt(temp);}
+    temp = Nat()
+    {normalIndex[0] = Integer.parseInt(temp);}
+    <SPACE>
+    temp = Nat()
+    <SLASH>
+    {verticesIndex[1] = Integer.parseInt(temp);}
+    temp = Nat()
+    <SLASH>
+    {uvIndex[1] = Integer.parseInt(temp);}
+    temp = Nat()
+    {normalIndex[1] = Integer.parseInt(temp);}
+    <SPACE>
+    temp = Nat()
+    <SLASH>
+    {verticesIndex[2] = Integer.parseInt(temp);}
+    temp = Nat()
+    <SLASH>
+    {uvIndex[2] = Integer.parseInt(temp);}
+    temp = Nat()
+    {
+        normalIndex[2] = Integer.parseInt(temp);
+		meshObject.faces.add(new Face(verticesIndex, uvIndex, normalIndex));
+    }
+}
+
+void CommentLine() :
+{}
+{
+    <COMMENT>
+}
+
+void EmptyLine() :
+{System.out.println("Empty line");}
+{
+     (<SPACE>)*
+}
+
+float Float() :
+{ Token t; }
+{
+    t = <FLOAT> { return Float.parseFloat(t.image); }
+}
+
+String Nat() :
+{Token token;}
+{
+    token = <NAT>
+    {return token.image;}
+}
+
+

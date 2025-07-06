@@ -1,7 +1,7 @@
 plugins {
     id 'java'
+    id "org.javacc.javacc" version "4.0.1"
 }
-
 group = 'org.example'
 version = '1.0-SNAPSHOT'
 
@@ -16,4 +16,9 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+compileJavacc {
+    inputDirectory = file('src/main/javacc/parser/')
+    outputDirectory = file('src/main/java/parser/')
 }

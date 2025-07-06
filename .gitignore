@@ -37,3 +37,7 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+
+### Remove ObjectParser.java (need to be build via gradle and javacc
+src/main/java/parser
