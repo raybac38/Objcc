@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Objcc" default="compile" basedir=".">
+    <property name="java.src" value="src/main/java"/>
+    <property name="javacc.home" value="/usr/share/java"/>
+    <property name="output.dir" value="bin"/>
+    <property name="class.path" value="bin"/>
+    <property name="parser.input" value="src/main/javacc/parser"/>
+    <property name="parser.output" value="src/main/javac/parser"/>
+    <property name="javac.compiler" value="javac10+"/>
+    <property name="javac.target" value="21"/>
+    
+    <target name="init">
+        <mkdir dir="${output.dir}"/>
+        <mkdir dir="${parser.output}"/>
+    </target>
+
+    <target name="parser" depends="init">
+        <javacc target="${parser.input}/ObjectParser.jj" javacchome="${javacc.home}"
+                outputdirectory="${parser.output}"/>
+    </target>
+
+    <target name="compile" depends="parser">
+        <javac destdir="${output.dir}"
+               debug="yes"
+               compiler="${javac.compiler}"
+               source="${javac.target}"
+               target="${javac.target}"
+               includeantruntime="false"
+               classpath="${class.path}">
+            <src path="${java.src"/>
+        </javac>
+    </target>
+
+    <target name="clean">
+        <delete dir="${output.dir}"/>
+        <delete dir="${parser.output}"/>
+    </target>
+</project>
