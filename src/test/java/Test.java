@@ -1,6 +1,6 @@
 import objcc.api.MeshData;
-import parser.ObjectParser;
-import parser.ParseException;
+import objcc.parser.ObjectParser;
+import objcc.parser.ParseException;
 
 import java.io.File;
 import java.io.FileInputStream;
