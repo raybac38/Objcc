@@ -1,4 +1,4 @@
-package api;
+package objcc.api;
 
 public interface FaceData {
 

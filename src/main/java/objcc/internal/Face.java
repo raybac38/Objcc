@@ -1,6 +1,6 @@
-package internal;
+package objcc.internal;
 
-import api.FaceData;
+import objcc.api.FaceData;
 
 public class Face implements FaceData {
 	public final int[] verticesIndex;

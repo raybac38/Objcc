@@ -1,7 +1,7 @@
-package internal;
+package objcc.internal;
 
-import api.FaceData;
-import api.MeshData;
+import objcc.api.FaceData;
+import objcc.api.MeshData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,5 +38,5 @@ public class MeshObject implements MeshData {
 		return faces;
 	}
 
-	
+
 }

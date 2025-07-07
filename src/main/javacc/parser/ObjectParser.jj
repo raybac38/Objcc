@@ -1,10 +1,11 @@
 PARSER_BEGIN(ObjectParser)
-package parser;
+package objcc.parser;
 
-import internal.Face;
-import internal.MeshObject;
-import api.FaceData;
-import api.MeshData;import java.io.InputStream;
+import objcc.internal.Face;
+import objcc.internal.MeshObject;
+import objcc.api.FaceData;
+import objcc.api.MeshData;
+import java.io.InputStream;
 
 public class ObjectParser {
 	public static MeshData parse(InputStream inputStream) throws Exception{
@@ -14,8 +15,6 @@ public class ObjectParser {
 		return meshObject;
 	}
 }
-
-
 
 PARSER_END(ObjectParser)
 

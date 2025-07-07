@@ -40,4 +40,5 @@ bin/
 
 
 ### Remove ObjectParser.java (need to be build via gradle and javacc
-src/main/java/parser
+src/main/java/objcc/parser
+objcc.jar

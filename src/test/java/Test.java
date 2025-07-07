@@ -1,4 +1,4 @@
-import api.MeshData;
+import objcc.api.MeshData;
 import parser.ObjectParser;
 import parser.ParseException;
 

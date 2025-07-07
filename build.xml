@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project name="Objcc" default="compile" basedir=".">
-    <property name="java.src" value="src/main/java"/>
+    <property name="jar.name" value="objcc.jar"/>
+    <property name="java.src" value="src/main/java/objcc"/>
     <property name="javacc.home" value="/usr/share/java"/>
     <property name="output.dir" value="bin"/>
     <property name="class.path" value="bin"/>
     <property name="parser.input" value="src/main/javacc/parser"/>
-    <property name="parser.output" value="src/main/javac/parser"/>
+    <property name="parser.output" value="${java.src}/parser"/>
     <property name="javac.compiler" value="javac10+"/>
     <property name="javac.target" value="21"/>
-    
+
     <target name="init">
         <mkdir dir="${output.dir}"/>
         <mkdir dir="${parser.output}"/>
@@ -28,8 +29,13 @@
                target="${javac.target}"
                includeantruntime="false"
                classpath="${class.path}">
-            <src path="${java.src"/>
+            <src path="${java.src}"/>
         </javac>
+    </target>
+
+    <target name="library">
+        <jar basedir="${output.dir}" destfile="${jar.name}"/>
+
     </target>
 
     <target name="clean">

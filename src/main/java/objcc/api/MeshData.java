@@ -1,4 +1,4 @@
-package api;
+package objcc.api;
 
 import java.util.List;
 
@@ -11,6 +11,6 @@ public interface MeshData {
 	List<float[]> getUV();
 
 	List<float[]> getNormal();
-	
+
 	List<FaceData> getFaces();
 }
